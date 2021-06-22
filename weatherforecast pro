@@ -1,0 +1,70 @@
+import requests
+#import os
+from datetime import datetime
+   
+
+name = input("Please enter your name: ")
+username = name[0:3]
+print ("Your username has been created and is", username, ".")
+
+password = input("Now please create a password. ")
+
+location = input("Enter the city name: ")
+api_key = '87d845b0b6cf29baa1a73cc34b067a95'
+   
+complete_api_link = "https://api.openweathermap.org/data/2.5/weather?q="+location+"&appid="+api_key
+api_link = requests.get(complete_api_link) 
+print(api_link.text)
+api_data = api_link.json()
+    
+    
+#create variables to store and display data
+temp_city = ((api_data['main']['temp']) - 273.15)
+weather_desc = api_data['weather'][0]['description']
+hmdt = api_data['main']['humidity']
+wind_spd = api_data['wind']['speed']
+date_time = datetime.now().strftime("%d %b %Y | %I:%M:%S %p")
+
+print ("-------------------------------------------------------------")
+print ("Weather Stats for - {}  || {}".format(location.upper(), date_time))
+print ("-------------------------------------------------------------")
+
+print ("Current temperature is: {:.2f} deg C".format(temp_city))
+print ("Current weather desc  :",weather_desc)
+print ("Current Humidity      :",hmdt, '%')
+print ("Current wind speed    :",wind_spd ,'kmph')
+file = open("complete_api_link","a")
+file.write (username)
+file.write (",")
+file.write (password)
+file.write("\n")
+file.close()
+
+print ("Your login details have been saved. ")
+ 
+ 
+ 
+ 
+ 
+ 
+ OUTPUT:
+ 
+ Please enter your name: PREETHI
+Your username has been created and is PRE .
+Now please create a password. HELLO
+Enter the city name: COIMBATORE
+{"coord":{"lon":76.9667,"lat":11},"weather":[{"id":802,"main":"Clouds","description":"scattered clo
+uds","icon":"03d"}],"base":"stations","main":{"temp":304.03,"feels_like":305.76,"temp_min":304.03,"
+temp_max":304.03,"pressure":1010,"humidity":51},"visibility":6000,"wind":{"speed":2.57,"deg":200},"
+clouds":{"all":40},"dt":1624348586,"sys":{"type":1,"id":9206,"country":"IN","sunrise":1624321862,"s
+unset":1624367826},"timezone":19800,"id":1273865,"name":"Coimbatore","cod":200}
+-------------------------------------------------------------
+Weather Stats for - COIMBATORE  || 22 Jun 2021 | 08:04:45 AM
+-------------------------------------------------------------
+Current temperature is: 30.88 deg C
+Current weather desc  : scattered clouds
+Current Humidity      : 51 %
+Current wind speed    : 2.57 kmph
+Your login details have been saved. 
+
+ 
